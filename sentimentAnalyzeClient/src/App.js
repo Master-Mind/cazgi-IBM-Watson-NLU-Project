@@ -6,7 +6,7 @@ import React from 'react';
 class App extends React.Component {
   /*
   We are setting the component as a state named innercomp.
-  When this state is accessed, the HTML that is set as the 
+  When this state is accessed, the HTML that is set as the
   value of the state, will be returned. The initial input mode
   is set to text
   */
@@ -15,13 +15,13 @@ class App extends React.Component {
           sentimentOutput:[],
           sentiment:true
         }
-  
+
   /*
   This method returns the component based on what the input mode is.
   If the requested input mode is "text" it returns a textbox with 4 rows.
   If the requested input mode is "url" it returns a textbox with 1 row.
   */
- 
+
   renderOutput = (input_mode)=>{
     let rows = 1
     let mode = "url"
@@ -35,8 +35,8 @@ class App extends React.Component {
       sentimentOutput:[],
       sentiment:true
       });
-  } 
-  
+  }
+
   sendForSentimentAnalysis = () => {
     this.setState({sentiment:true});
     let url = ".";
@@ -49,13 +49,15 @@ class App extends React.Component {
         let output = data.label;
         let color = "white"
         switch(output) {
-          case "positive": color = "black";break;
-          case "negative": color = "black";break;
+          case "positive": color = "green";break;
+          case "neutral": color = "yellow";break;
+          case "negative": color = "red";break;
           default: color = "black";
         }
         output = <div style={{color:color,fontSize:20}}>{output}</div>
         this.setState({sentimentOutput:output});
-      })});
+      }).catch(err => {this.setState({sentimentOutput:"Could not proccess text"});})
+    });
   }
 
   sendForEmotionAnalysis = () => {
@@ -70,10 +72,13 @@ class App extends React.Component {
       this.setState({sentimentOutput:<EmotionTable emotions={data}/>});
   })})  ;
   }
-  
+
+  componentDidMount(){
+    document.title = "Sentiment Analyzer"
+  }
 
   render() {
-    return (  
+    return (
       <div className="App">
       <button className="btn btn-info" onClick={()=>{this.renderOutput('text')}}>Text</button>
         <button className="btn btn-dark"  onClick={()=>{this.renderOutput('url')}}>URL</button>
