@@ -94,7 +94,6 @@ app.get("/url/sentiment", (req,res) => {
    return res.send("Could not do desired operation "+err);
    });
 });
-console.log("foo");
 
 //The endpoint for the webserver ending with /text/emotion
 app.get("/text/emotion", (req,res) => {
@@ -120,7 +119,9 @@ app.get("/text/emotion", (req,res) => {
       return res.send(analysisResults.result.keywords[0].emotion,null,2);
    })
    .catch(err => {
-   return res.send("Could not do desired operation "+err);
+     const clientError = {"clientError":"Could not do desired operation "+err}
+     console.log("Could not do desired operation "+err);
+   return res.send(clientError);
    });
 });
 
@@ -146,7 +147,9 @@ app.get("/text/sentiment", (req,res) => {
       return res.send(analysisResults.result.keywords[0].sentiment,null,2);
    })
    .catch(err => {
-   return res.send("Could not do desired operation "+err);
+       const clientError = {"clientError":"Could not do desired operation "+err}
+       console.log("Could not do desired operation "+err);
+     return res.send(clientError);
    });
 });
 

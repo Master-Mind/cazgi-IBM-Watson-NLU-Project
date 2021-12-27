@@ -45,6 +45,11 @@ class App extends React.Component {
 
     fetch(url).then((response)=>{
         response.json().then((data)=>{
+          if ("clientError" in data)
+          {
+            this.setState({sentimentOutput:data.clientError});
+            return;
+          }
         this.setState({sentimentOutput:data.label});
         let output = data.label;
         let color = "white"
@@ -56,7 +61,10 @@ class App extends React.Component {
         }
         output = <div style={{color:color,fontSize:20}}>{output}</div>
         this.setState({sentimentOutput:output});
-      }).catch(err => {this.setState({sentimentOutput:"Could not proccess text"});})
+      }).catch((err) =>
+
+            {this.setState({sentimentOutput:err.toString()});}
+        );
     });
   }
 
@@ -69,6 +77,12 @@ class App extends React.Component {
 
     fetch(url).then((response)=>{
       response.json().then((data)=>{
+
+          if ("clientError" in data)
+          {
+            this.setState({sentimentOutput:data.clientError});
+            return;
+          }
       this.setState({sentimentOutput:<EmotionTable emotions={data}/>});
   })})  ;
   }
