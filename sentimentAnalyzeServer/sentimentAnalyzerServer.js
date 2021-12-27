@@ -109,12 +109,11 @@ app.get("/text/emotion", (req,res) => {
                           }
           }
       }
-      console.log("foo");
+
    const naturalLanguageUnderstanding = getNLUInstance();
 
    naturalLanguageUnderstanding.analyze(analyzeParams)
    .then(analysisResults => {
-     console.log(analysisResults.result.keywords[0].emotion);
       //Please refer to the image to see the order of retrieval
       return res.send(analysisResults.result.keywords[0].emotion,null,2);
    })
